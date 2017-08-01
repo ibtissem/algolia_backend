@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1"> 
+    
+        <record id="ip_web_panier_reminder_cron" model="ir.cron">
+            <field name="name">Synchronisation Algolia</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field name="model" eval="'ip.algolia'" />
+            <field name="function" eval="'synchronise_algolia_index'" />
+            <field name="args" eval="'()'" />
+        </record>
+        
+    </data>
+</openerp>
