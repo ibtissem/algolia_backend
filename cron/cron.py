@@ -38,8 +38,7 @@ class cron(osv.osv):
             index = client.initIndex(algolia.ip_index_algolia)
             tmpl_ids = tmpl_obj.search(cr,uid,[('ip_aded_to_algolia','=',False),('website_published','=',True),('website_published','=',True)])
             for tmpl in tmpl_obj.browse(cr,uid,tmpl_ids,context=context):
-                objects.append(
-                               {
+                object = {
                                 'id_odoo':tmpl.id,
                                 'name_product':tmpl.name,
                                 'description_product':tmpl.ip_title,
@@ -48,8 +47,11 @@ class cron(osv.osv):
 #                                 'ip_url':tmpl.ip_url,
                                 'ref_interne':tmpl.ip_ref_interne,
                                 }
-                               )
-            algolia_res = index.addObjects(objects)
-            objectID = algolia_res["objectID"]
-            tmpl_ids = tmpl_obj.write(cr,uid,tmpl_ids,{'ip_aded_to_algolia':True,'id_algolia':objectID})
+                algolia_res = index.addObject(object)
+                objectID = algolia_res["objectID"]
+                if objectID:
+                            tmpl_obj.write(cr,uid,tmpl.id,{'ip_aded_to_algolia':True,'id_algolia':objectID})
+#             algolia_res = index.addObjects(objects)
+#             objectID = algolia_res["objectIDs"]
+#             tmpl_ids = tmpl_obj.write(cr,uid,tmpl_ids,{'ip_aded_to_algolia':True,'id_algolia':objectID})
         return True
