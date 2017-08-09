@@ -10,7 +10,7 @@ class product_template(osv.osv):
     _inherit = "product.template"   
     
     _columns = {
-                'ip_aded_to_algolia': fields.char('Aded to algolia'),
+                'ip_aded_algolia': fields.boolean('Aded to algolia'),
                 'id_algolia': fields.char('Id Produit Algolia'),
                 }
 
@@ -39,7 +39,7 @@ class product_template(osv.osv):
                         algolia_res = index.addObject(object)
                         objectID = algolia_res["objectID"]
                         if objectID:
-                            self.write(cr,uid,res,{'ip_aded_to_algolia':True,'id_algolia':objectID})
+                            self.write(cr,uid,res,{'ip_aded_algolia':True,'id_algolia':objectID})
                 except:
                     pass
             return res   
