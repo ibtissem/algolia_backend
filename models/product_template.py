@@ -18,7 +18,7 @@ class product_template(osv.osv):
             res = super(product_template, self).create(cr,uid,values,context=context)
             tmpl = self.browse(cr,uid,res,context=context) 
             if tmpl:
-#                 try:
+                try:
                     algolia = self.pool.get('ip.algolia')
                     aloglia_ids = algolia.search(cr,uid,[],context=context)
                     tmpl_obj =  self.pool.get('product.template')
@@ -33,15 +33,15 @@ class product_template(osv.osv):
                                             'description_product':tmpl.ip_title,
                                             'image_product':tmpl.image_medium,
                                             'prix':tmpl.ip_min_price,
-                                            'ip_url':tmpl.ip_prod_url,
+#                                             'ip_url':tmpl.ip_prod_url,
                                             'ref_interne':tmpl.ip_ref_interne,
                                             } 
                         algolia_res = index.addObject(object)
                         objectID = algolia_res["objectID"]
                         if objectID:
                             self.write(cr,uid,res,{'ip_aded_to_algolia':True,'id_algolia':objectID})
-#                 except:
-#                     pass
+                except:
+                    pass
             return res   
 
     def write(self, cr, uid, ids, values, context=None):
@@ -50,7 +50,7 @@ class product_template(osv.osv):
             res = super(product_template, self).write(cr,uid,ids,values,context=context)
             tmpl = self.browse(cr,uid,ids[0],context=context) 
             if tmpl:
-#                 try:
+                try:
                     algolia = self.pool.get('ip.algolia')
                     aloglia_ids = algolia.search(cr,uid,[],context=context)
                     tmpl_obj =  self.pool.get('product.template')
@@ -68,12 +68,13 @@ class product_template(osv.osv):
                                             'ref_interne':tmpl.ip_ref_interne,
                                             'objectID':tmpl.id_algolia or 0
                                             })
-#                 except:
-#                     pass
+                except:
+                    pass
             return res  
         
     def unlink(self, cr, uid, ids, context=None):
         for tmpl in self.browse(cr,uid,ids,context=context):
+            try:
                     algolia = self.pool.get('ip.algolia')
                     aloglia_ids = algolia.search(cr,uid,[],context=context)
                     tmpl_obj =  self.pool.get('product.template')
@@ -82,4 +83,6 @@ class product_template(osv.osv):
                         client = algoliasearch.client.Client(algolia.ip_client_id_algolia, algolia.ip_api_algolia)
                         index = client.initIndex(algolia.ip_index_algolia)
                         res = index.delete_object(tmpl.id_algolia)
+            except:
+                pass
         return super(product_template, self).unlink(cr, uid, ids, context=context)

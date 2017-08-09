@@ -5,7 +5,7 @@
         <record id="ip_web_panier_reminder_cron" model="ir.cron">
             <field name="name">Synchronisation Algolia</field>
             <field name="interval_number">1</field>
-            <field name="interval_type">days</field>
+            <field name="interval_type">months</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False" />
             <field name="model" eval="'ip.algolia'" />
