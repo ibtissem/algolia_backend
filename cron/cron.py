@@ -45,7 +45,7 @@ class cron(osv.osv):
                                 'description_product':tmpl.ip_title,
                                 'image_product':tmpl.image_medium,
                                 'prix':tmpl.ip_min_price,
-                                'ip_url':tmpl.ip_url,
+#                                 'ip_url':tmpl.ip_url,
                                 'ref_interne':tmpl.ip_ref_interne,
                                 }
                                )
