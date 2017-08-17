@@ -1,2 +1,2 @@
 import algolia
-import product_template
+import product_template 
