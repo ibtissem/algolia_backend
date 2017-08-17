@@ -72,7 +72,7 @@ class product_template(osv.osv):
                                             })
                 except:
                     pass
-        return res  
+        return res   
         
     def unlink(self, cr, uid, ids, context=None):
         for tmpl in self.browse(cr,uid,ids,context=context):
