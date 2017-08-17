@@ -45,10 +45,11 @@ class product_template(osv.osv):
             return res   
 
     def write(self, cr, uid, ids, values, context=None):
+        res = super(product_template, self).write(cr,uid,ids,values,context=context)
         if ids:
             if isinstance(ids, (int, long)):
               ids = [ids]
-            res = super(product_template, self).write(cr,uid,ids,values,context=context)
+            
             tmpl = self.browse(cr,uid,ids[0],context=context) 
             if tmpl:
                 try:
