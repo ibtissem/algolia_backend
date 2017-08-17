@@ -45,6 +45,7 @@ class product_template(osv.osv):
             return res   
 
     def write(self, cr, uid, ids, values, context=None):
+        if ids:
             if isinstance(ids, (int, long)):
               ids = [ids]
             res = super(product_template, self).write(cr,uid,ids,values,context=context)
@@ -70,7 +71,7 @@ class product_template(osv.osv):
                                             })
                 except:
                     pass
-            return res  
+        return res  
         
     def unlink(self, cr, uid, ids, context=None):
         for tmpl in self.browse(cr,uid,ids,context=context):
