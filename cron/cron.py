@@ -19,39 +19,36 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import fields, osv
+from odoo import models, fields, api, _
 try:
     import algoliasearch
 except ImportError:
     _logger.debug('Can not import algoliasearch')
     
-class cron(osv.osv):
-    _inherit = 'ip.algolia' 
+class cron(models.Model):
+    _inherit = 'algolia.config' 
     
-    def synchronise_algolia_index(self, cr, uid, context=None):
-        aloglia_ids = self.search(cr,uid,[],context=context)
-        tmpl_obj =  self.pool.get('product.template')
+    @api.multi
+    def synchronise_algolia_index(self):
+        aloglia_ids = self.search([])
+        tmpl_obj =  self.env['product.template']
         objects = []
         if aloglia_ids:
-            algolia = self.browse(cr, uid, aloglia_ids[0] , context=context) 
-            client = algoliasearch.client.Client(algolia.ip_client_id_algolia, algolia.ip_api_algolia)
-            index = client.initIndex(algolia.ip_index_algolia)
-            tmpl_ids = tmpl_obj.search(cr,uid,[('ip_aded_algolia','=',False),('website_published','=',True),('website_published','=',True)])
-            for tmpl in tmpl_obj.browse(cr,uid,tmpl_ids,context=context):
+            algolia = aloglia_ids[0] 
+            client = algoliasearch.client.Client(algolia.client_id_algolia, algolia.api_algolia)
+            index = client.initIndex(algolia.index_algolia)
+            tmpl_ids = tmpl_obj.search([('aded_algolia','=',False),('sale_ok','=',True)])
+            for tmpl in tmpl_ids:
                 object = {
                                 'id_odoo':tmpl.id,
-                                'name_product':tmpl.name,
-                                'description_product':tmpl.ip_title,
-                                'image_product':tmpl.image_medium,
-                                'prix':tmpl.ip_min_price,
-#                                 'ip_url':tmpl.ip_url,
-                                'ref_interne':tmpl.ip_ref_interne,
+                                'name_product':tmpl.name, 
+                                'image_product':tmpl.image_small,
+                                'prix':tmpl.list_price, 
+                                'ref_interne':tmpl.default_code,
                                 }
                 algolia_res = index.addObject(object)
                 objectID = algolia_res["objectID"]
                 if objectID:
-                            tmpl_obj.write(cr,uid,tmpl.id,{'ip_aded_algolia':True,'id_algolia':objectID})
-#             algolia_res = index.addObjects(objects)
-#             objectID = algolia_res["objectIDs"]
-#             tmpl_ids = tmpl_obj.write(cr,uid,tmpl_ids,{'ip_aded_algolia':True,'id_algolia':objectID})
+                    tmpl = tmpl_obj.browse(tmpl.id)
+                    tmpl.write({'aded_algolia':True,'id_algolia':objectID})
         return True
