@@ -20,35 +20,40 @@
 #
 ##############################################################################
 from odoo import models, fields, api, _
+from odoo.addons.website.models.website import slug
 try:
     import algoliasearch
 except ImportError:
     _logger.debug('Can not import algoliasearch')
-    
+from odoo.exceptions import UserError
+
 class cron(models.Model):
-    _inherit = 'algolia.config' 
+    _inherit = 'website' 
     
+#     cron job to synchronise data to index algolia
     @api.multi
-    def synchronise_algolia_index(self):
+    def synchronise_algolia_index(self,api_algolia,client_id_algolia,index_algolia):
         aloglia_ids = self.search([])
         tmpl_obj =  self.env['product.template']
         objects = []
-        if aloglia_ids:
-            algolia = aloglia_ids[0] 
-            client = algoliasearch.client.Client(algolia.client_id_algolia, algolia.api_algolia)
-            index = client.initIndex(algolia.index_algolia)
-            tmpl_ids = tmpl_obj.search([('aded_algolia','=',False),('sale_ok','=',True)])
-            for tmpl in tmpl_ids:
-                object = {
-                                'id_odoo':tmpl.id,
-                                'name_product':tmpl.name, 
-                                'image_product':tmpl.image_small,
-                                'prix':tmpl.list_price, 
-                                'ref_interne':tmpl.default_code,
-                                }
-                algolia_res = index.addObject(object)
-                objectID = algolia_res["objectID"]
-                if objectID:
-                    tmpl = tmpl_obj.browse(tmpl.id)
-                    tmpl.write({'aded_algolia':True,'id_algolia':objectID})
+        if aloglia_ids: 
+            if client_id_algolia and api_algolia and index_algolia:
+                client = algoliasearch.client.Client(api_algolia,client_id_algolia)
+                index = client.initIndex(index_algolia)
+                tmpl_ids = tmpl_obj.search([('aded_algolia','=',False),('sale_ok','=',True),('website_published','!=',False)])
+                for tmpl in tmpl_ids:
+                    url = "/shop/product/" + slug(tmpl)
+                    object = {
+                                    'id_odoo':tmpl.id,
+                                    'name_product':tmpl.name, 
+                                    'image_product':tmpl.image_small,
+                                    'prix':tmpl.list_price, 
+                                    'ref_interne':tmpl.default_code,
+                                    'url_produit':url,
+                                    }
+                    algolia_res = index.addObject(object)
+                    objectID = algolia_res["objectID"]
+                    if objectID:
+                        tmpl = tmpl_obj.browse(tmpl.id)
+                        tmpl.write({'aded_algolia':True,'id_algolia':objectID})
         return True

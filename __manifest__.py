@@ -18,7 +18,6 @@ algolia connector engine
     'depends': ['base','product','website_sale'],
 
     'data': [
-        'views/algolia.xml', 
         'views/config.xml',
         'cron/cron.xml',
              ],
