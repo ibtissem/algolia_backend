@@ -19,7 +19,7 @@ algolia connector engine
 
     'data': [
         'views/config.xml',
-        'cron/cron.xml',
+#         'cron/cron.xml',
              ],
 
     'installable': True,

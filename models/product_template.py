@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _ 
-from odoo.addons.website.models.website import slug
+from odoo.addons.http_routing.models.ir_http import slug
 try:
     import algoliasearch
 except ImportError:

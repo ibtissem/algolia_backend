@@ -17,18 +17,19 @@ class algolia(models.Model):
     @api.multi
     def write(self,vals):
         res = super(algolia,self).write(vals)
-        if vals.get('api_algolia'):
-            api_algolia = vals.get('api_algolia') 
-        else:
-            api_algolia = self.api_algolia
-        if vals.get('client_id_algolia'):
-            client_id_algolia = vals.get('client_id_algolia') 
-        else:
-            client_id_algolia = self.client_id_algolia
-        if vals.get('index_algolia'):
-            index_algolia = vals.get('index_algolia') 
-        else:
-            index_algolia = self.index_algolia
-        if api_algolia and client_id_algolia and index_algolia:
-            self.synchronise_algolia_index(api_algolia,client_id_algolia,index_algolia)
+        for website in self:
+            if vals.get('api_algolia'):
+                api_algolia = vals.get('api_algolia') 
+            else:
+                api_algolia = self.api_algolia
+            if vals.get('client_id_algolia'):
+                client_id_algolia = vals.get('client_id_algolia') 
+            else:
+                client_id_algolia = self.client_id_algolia
+            if vals.get('index_algolia'):
+                index_algolia = vals.get('index_algolia') 
+            else:
+                index_algolia = self.index_algolia
+            if api_algolia and client_id_algolia and index_algolia:
+                self.synchronise_algolia_index(api_algolia,client_id_algolia,index_algolia)
         return res
