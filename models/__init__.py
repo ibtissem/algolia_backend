@@ -1,3 +1,3 @@
-import algolia
-import product_template 
-import config
+from . import algolia
+from . import product_template 
+from . import config
