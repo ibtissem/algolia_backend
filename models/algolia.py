@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, _ 
+from openerp import models, fields, api, _
+_logger = logging.getLogger(__name__) 
 try:
     import algoliasearch
 except ImportError:
