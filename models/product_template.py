@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _ 
 from odoo.addons.http_routing.models.ir_http import slug
+import logging
 _logger = logging.getLogger(__name__)
 try:
     import algoliasearch
