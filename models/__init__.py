@@ -1,3 +1,3 @@
-import website
-import product_template 
-import config
+from . import website
+from . import product_template 
+from . import config 
