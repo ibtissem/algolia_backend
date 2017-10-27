@@ -3,7 +3,6 @@
 
 from odoo import api, models, fields
 
-
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
@@ -11,7 +10,6 @@ class ResConfigSettings(models.TransientModel):
     api_algolia = fields.Char(related='website_id.api_algolia')
     client_id_algolia = fields.Char(related='website_id.client_id_algolia')
     index_algolia = fields.Char(related='website_id.index_algolia')
-    
     
     @api.model
     def get_values(self):
@@ -31,4 +29,5 @@ class ResConfigSettings(models.TransientModel):
         set_param = self.env['ir.config_parameter'].sudo().set_param
         website = self.env['website'].search([])
         add = self.api_addressverify
-        rreess = website.write({'api_algolia': self.api_algolia,'client_id_algolia': self.client_id_algolia,'index_algolia': self.index_algolia})
+        for wbs in website:
+            wbs.write({'api_algolia': self.api_algolia,'client_id_algolia': self.client_id_algolia,'index_algolia': self.index_algolia})

@@ -6,37 +6,33 @@
         <field name="inherit_id" ref="website.res_config_settings_view_form"/>
         <field name="arch" type="xml">
                 <div id="google_maps_setting"  position="after">
-                                <div class="col-xs-12 col-md-6 o_setting_box" id="address_api_verifier">
-                                    <div class="o_setting_left_pane">
-                                    </div>
-                                    <div class="o_setting_right_pane">
-                                        <label string="Address verify Api"/>
-                                        <div class="content-group">
-                                            <div class="row mt16">
-                                                <label class="col-md-3 o_light_label" string="API Key" for="api_algolia"/>
-                                                <field name="api_algolia"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="o_setting_right_pane">
-                                        <label string="client_id_algolia"/>
-                                        <div class="content-group">
-                                            <div class="row mt16">
-                                                <label class="col-md-3 o_light_label" string="client_id_algolia" for="client_id_algolia"/>
-                                                <field name="client_id_algolia"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="o_setting_right_pane">
-                                        <label string="index_algolia"/>
-                                        <div class="content-group">
-                                            <div class="row mt16">
-                                                <label class="col-md-3 o_light_label" string="index_algolia" for="index_algolia"/>
-                                                <field name="index_algolia"/>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="algolia_api_verifier">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label string="Algolia Api"/>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label class="col-md-3 o_light_label" string="API Key" for="api_algolia"/>
+                                    <field name="api_algolia"/>
                                 </div>
+                                <div class="row mt16">
+                                    <label class="col-md-3 o_light_label" for="client_id_algolia"/>
+                                    <field name="client_id_algolia"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label class="col-md-3 o_light_label" for="index_algolia"/>
+                                    <field name="index_algolia"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <div class="content-group"></div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <div class="content-group"></div>
+                        </div>
+                    </div>
                 </div>
         </field>
     </record>

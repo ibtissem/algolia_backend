@@ -1,34 +1,38 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    This module copyright (C) 2013 Therp BV (<http://therp.nl>)
-#    Code snippets from openobject-server copyright (C) 2004-2013 OpenERP S.A.
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-from odoo import models, fields, api, _
-from odoo.addons.http_routing.models.ir_http import slug
+from openerp import models, fields, api, _ 
 try:
     import algoliasearch
 except ImportError:
     _logger.debug('Can not import algoliasearch')
-from odoo.exceptions import UserError
+    
+class algolia(models.Model): 
+    _inherit = "website"   
+    
+    name = fields.Char('Nom')
+    api_algolia = fields.Char('Api Key Algolia')
+    client_id_algolia = fields.Char('Algolia identifier')
+    index_algolia = fields.Char('Algolia Index')
 
-class cron(models.Model):
-    _inherit = 'website' 
+    #Synchronise data every time the api credentials is changed from the configuration page
+    @api.multi
+    def write(self,vals):
+        res = super(algolia,self).write(vals)
+        for website in self:
+            if vals.get('api_algolia'):
+                api_algolia = vals.get('api_algolia') 
+            else:
+                api_algolia = self.api_algolia
+            if vals.get('client_id_algolia'):
+                client_id_algolia = vals.get('client_id_algolia') 
+            else:
+                client_id_algolia = self.client_id_algolia
+            if vals.get('index_algolia'):
+                index_algolia = vals.get('index_algolia') 
+            else:
+                index_algolia = self.index_algolia
+            if api_algolia and client_id_algolia and index_algolia:
+                self.synchronise_algolia_index(api_algolia,client_id_algolia,index_algolia)
+        return res
     
 #     cron job to synchronise data to index algolia
     @api.multi
