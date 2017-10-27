@@ -14,7 +14,7 @@ class product_template(models.Model):
 #    id algolia to in case of modification of this product we can synchronised to its proper product in algolia index
     id_algolia = fields.Char('Id Produit Algolia')
 
-#     in case of the add of new product add to algolia
+#    in case of the add of new product add to algolia
     @api.model
     def create(self,values):
             res = super(product_template, self).create(values)
@@ -44,7 +44,8 @@ class product_template(models.Model):
                             res.write({'aded_algolia':True,'id_algolia':objectID})
                 except:
                     pass
-            return res   
+            return res  
+         
 #     in case of the update of a product updatethe product to algolia
     @api.multi
     def write(self,values):
