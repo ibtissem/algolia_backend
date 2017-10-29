@@ -28,6 +28,5 @@ class ResConfigSettings(models.TransientModel):
         super(ResConfigSettings, self).set_values() 
         set_param = self.env['ir.config_parameter'].sudo().set_param
         website = self.env['website'].search([])
-        add = self.api_addressverify
         for wbs in website:
             wbs.write({'api_algolia': self.api_algolia,'client_id_algolia': self.client_id_algolia,'index_algolia': self.index_algolia})
