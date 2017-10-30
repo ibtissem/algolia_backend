@@ -2,7 +2,6 @@
 
 {
     'name': 'Algolia connector',
-    'version': '11.0',
     'category': 'algolia_backend',
     'summary': 'Add algolia api credentials and synchronize data',
     'version': '1.0',
